@@ -1,0 +1,21 @@
+<section class="mainbar" ng-init="vm.activate()">
+    <section class="matter">
+        <div class="container">
+            <div class="row">
+                <div class="widget wviolet">
+                    <div ht-widget-header title="{{vm.title}}"></div>
+                    <div class="widget-content user">
+                        <h3>Address</h3>
+                        <form name="vm.addressForm" class="form-horizontal" role="form" novalidate>
+                            <address is-physical="true" show-errors="vm.showErrors"></address>
+                            <button ng-click="vm.save()">Save</button>
+                        </form>
+                    </div>
+                    <div class="widget-foot">
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
