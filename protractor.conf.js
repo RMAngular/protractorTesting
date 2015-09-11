@@ -12,7 +12,7 @@ exports.config = {
      */
     // Spec patterns are relative to the current working directly when
     // protractor is called.
-    specs: ['protractor/*Spec.js'],
+    specs: ['src/client/app/components/**/*e2e.js'],
 
     params: {
         fbClientId: '1508884422727010',
@@ -40,16 +40,16 @@ exports.config = {
 //        }
     ],
 
-    baseUrl: 'http://localhost:8282',
+    baseUrl: 'http://localhost:9001',
     //baseUrl: 'http://fitnessheroes.briebugconsulting.com',
 
     onPrepare: function() {
         'use strict';
 
-        require('jasmine-reporters');
-        jasmine.getEnv().addReporter(
-            new jasmine.JUnitXmlReporter('xmloutput', true, true)
-        );
+        //require('jasmine-reporters');
+        //jasmine.getEnv().addReporter(
+        //    new jasmine.JUnitXmlReporter('xmloutput', true, true)
+        //);
     }
 
     /*

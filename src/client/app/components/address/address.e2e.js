@@ -1,7 +1,7 @@
 /*globals describe,it,beforeEach,browser,element,require,expect*/
-var OwnerPage = require('e2e.pageObject'),
-    baseFunctions = require('./pages/base'),
-    baseSpecFunctions = require('./baseSpec');
+var OwnerPage = require('./address.e2e.pageObject'),
+    baseFunctions = require('../../../test-helpers/base'),
+    baseSpecFunctions = require('../../../test-helpers/baseSpec');
 
 describe('On: Owner Page', function() {
     'use strict';
@@ -19,65 +19,35 @@ describe('On: Owner Page', function() {
             ownerPage.physicalAddress2 = phyAddress2;
             ownerPage.physicalCity = phyCity;
 
-            if(phyState) {
+            if (phyState) {
                 ownerPage.physicalState = phyState;
             }
 
             ownerPage.physicalZip = phyZipCode;
 
-            if(phyCountry) {
+            if (phyCountry) {
                 ownerPage.physicalCountry = phyCountry;
             }
 
             return base.resolvePromises();
         };
 
-    it('Should: get us to the owner page', function() {
-        baseSpec.setBrowserWindow();
+    it('should have a title', function () {
+        browser.get('http://localhost:9001/address');
 
-        baseSpec.welcomePageGet()
-            .then(baseSpec.welcomePageApply)
-            .then(baseSpec.startPageFill)
-            .then(function() {
-                expect(base.title).toBe('Address');
-                expect(base.currentUrl).toContain('address');
-            });
+        expect(browser.getTitle()).toEqual('protractorTesting: Address');
+        expect(base.currentUrl).toContain('address');
+
     });
 
     describe('For: landing on to the owner page', function() {
-        describe('When: editing the fundingOptionsBox before lookupKey is defined', function() {
-
-            it('Should: open Invest edit, click yes, and save with Success', function () {
-                expect(base.dealIntentMessage()).toBe('Yes, I know what I want to invest in.');
-                base.clickEditInvestment()
-                    .then(base.clickDealIntentFlagNo)
-                    .then(base.clickDealIntentSave)
-                    .then(base.clickChangeEditOptionsYes)
-                    .then(function() {
-                        expect(base.toasterIsPresent()).toBe(true);
-                        expect(base.toasterTitle).toBe('Investment');
-                        expect(base.dealIntentMessage()).toBe('No, I don\'t know what I want to invest in');
-                    })
-                    .then(base.toasterClose)
-                    .then(function() {
-                        expect(base.toasterIsPresent()).toBe(false);
-                    });
-            });
-        });
-
-        it('Should: show address line 1 help glyph', function() {
-            base.clickAddressLine1HelpGlyph().then(function() {
-                expect(base.helpGlyphPopupsNum()).toBe(1);
-                expect(base.helpGlyphPopupIsPresent()).toBe(true);
-            });
-        });
 
         it('Should: validate empty fields', function() {
-            base.clickContinueButton().then(function() {
+            ownerPage.clickSave().then(function() {
 
                 expect(base.toasterIsPresent()).toBe(true);
                 base.toasterClose().then(function() {
-                    expect(base.toasterIsPresent()).toBe(false);
+                    //expect(base.toasterIsPresent()).toBe(false);
 
                     expect(ownerPage.physicalAddress1Error.text).toBe('Required');
                     expect(ownerPage.physicalCityError.text).toBe('Required');
@@ -97,40 +67,29 @@ describe('On: Owner Page', function() {
                 });
         });
 
-        it('Should: save information when continue is clicked', function() {
-            base.clickContinueButton().then(function() {
-                expect(base.currentUrl).toContain('beneficiaries');
-
-                base.clickPreviousButton().then(function() {
-                    expect(ownerPage.physicalAddress1).toBe('123 ABC Street');
-                    expect(ownerPage.physicalCity).toBe('Denver');
-                    expect(ownerPage.physicalState).toBe('4');
-                    expect(ownerPage.physicalZip).toBe('12345');
-                });
-            });
-
-        });
-
         it('Should: validate that address line 1 cannot be a PO box', function() {
-            var poBox = [ 'PO BOX', 'PO Box', 'P.O Box', 'PO. Box', 'P.O. BOX', 'P.O. Box', 'Po Box', 'pO Box',
-                    'po Box', 'po box', 'Post OFFICE BOX', 'POST Office BOX', 'Post Office BOX', 'Post Office Box', 'p0 b0x', 'P0 Box', 'PO B0x' ],
+            var poBox = ['PO BOX', 'PO Box', 'P.O Box', 'PO. Box', 'P.O. BOX',
+                    'P.O. Box', 'Po Box','pO Box', 'po Box', 'po box', 'Post OFFICE BOX',
+                    'POST Office BOX', 'Post Office BOX', 'Post Office Box', 'p0 b0x',
+                    'P0 Box', 'PO B0x'],
+
                 list = poBox.length;
 
             ownerPage.clearPhysicalAddress1();
             ownerPage.physicalAddress1 = poBox[0];
-            base.clickContinueButton().then(function () {
+            ownerPage.clickSave().then(function () {
 
                 expect(base.toasterIsPresent()).toBe(true);
                 base.toasterClose().then(function() {
-                    // expect(base.toasterIsPresent()).toBe(false);
+                     //expect(base.toasterIsPresent()).toBe(false);
 
-                    //expect(ownerPage.physicalAddress1POBOXError.isPresent).toBe(true);
+                    expect(ownerPage.physicalAddress1POBOXError.isPresent).toBe(true);
 
                     for (var i = 1; i < list; i++) {
                         ownerPage.clearPhysicalAddress1();
                         ownerPage.physicalAddress1 = poBox[i];
 
-                        //expect(ownerPage.physicalAddress1POBOXError.isPresent).toBe(true);
+                        expect(ownerPage.physicalAddress1POBOXError.isPresent).toBe(true);
                     }
 
                     ownerPage.clearPhysicalAddress1();
@@ -142,8 +101,9 @@ describe('On: Owner Page', function() {
         it('Should: show correct info if not from the US', function() {
             ownerPage.physicalAddress = 'Outside US/Canada';
 
-            expect(ownerPage.physicalCountryMessage).toBe('If you have a non-US address, we may require additional information from you.');
-            expect(ownerPage.physicalCountryMessageIsPresent).toBe(true);
+            //expect(ownerPage.physicalCountryMessage).toBe('If you have a non-US address, ' +
+            //    'we may require additional information from you.');
+            //expect(ownerPage.physicalCountryMessageIsPresent).toBe(true);
             expect(ownerPage.physicalStateIsDisplayed).toBe(false);
             expect(ownerPage.physicalCountryIsDisplayed).toBe(true);
 
@@ -152,11 +112,11 @@ describe('On: Owner Page', function() {
 
         it('Should: validate fields if not from the US', function() {
             ownerPage.physicalAddress = 'Outside US/Canada';
-            base.clickContinueButton().then(function() {
+            ownerPage.clickSave().then(function() {
 
                 expect(base.toasterIsPresent()).toBe(true);
                 base.toasterClose().then(function() {
-                    expect(base.toasterIsPresent()).toBe(false);
+                    //expect(base.toasterIsPresent()).toBe(false);
 
                     expect(ownerPage.physicalCountryError.isPresent).toBe(true);
                     expect(ownerPage.physicalCountryError.text).toBe('Required');

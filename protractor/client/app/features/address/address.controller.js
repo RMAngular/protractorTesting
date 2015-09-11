@@ -18,6 +18,8 @@
 
             if (vm.addressForm.$valid) {
                 logger.info('valid');
+            } else {
+                logger.error('invalid');
             }
         }
     }
