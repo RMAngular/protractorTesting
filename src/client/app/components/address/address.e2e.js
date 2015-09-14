@@ -81,7 +81,7 @@ describe('On: Owner Page', function() {
 
                 expect(base.toasterIsPresent()).toBe(true);
                 base.toasterClose().then(function() {
-                     //expect(base.toasterIsPresent()).toBe(false);
+                    //expect(base.toasterIsPresent()).toBe(false);
 
                     expect(ownerPage.physicalAddress1POBOXError.isPresent).toBe(true);
 

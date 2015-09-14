@@ -1,5 +1,7 @@
 /*globals exports,require,jasmine*/
 exports.config = {
+    seleniumServerJar: '/usr/local/lib/node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar',
+    chromeDriver: '/usr/local/lib/node_modules/protractor/selenium/chromedriver',
     /*
      // Do not start a Selenium Standalone sever - only run this using chrome.
      chromeOnly: true,

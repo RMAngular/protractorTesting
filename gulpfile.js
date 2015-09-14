@@ -7,10 +7,33 @@ var gulp = require('gulp');
 var path = require('path');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')({lazy: true});
+var runSequence = require('run-sequence');
 
 var colors = $.util.colors;
 var envenv = $.util.env;
 var port = process.env.PORT || config.defaultPort;
+
+var protractor = require("gulp-protractor").protractor;
+var webserver = require('gulp-webserver');
+
+
+gulp.task('protractor-run', function () {
+    return gulp
+        .src(config.protractor)
+        .pipe(protractor({
+            configFile: "./protractor.conf.js",
+            args: ['--baseUrl', 'http://127.0.0.1:8000']
+        }))
+        .on('error', function(e) { throw e });
+});
+
+//gulp.task('test:e2e', function(callback) {
+//    runSequence('protractor-server', 'protractor-run', callback);
+//});
+//
+//gulp.task('protractor-server', function() {
+//    serve(true, false, 9001);
+//});
 
 /**
  * yargs variables can be passed in to alter the behavior, when present.
@@ -429,15 +452,19 @@ function orderSrc (src, order) {
  * @param  {Boolean} isDev - dev or build mode
  * @param  {Boolean} specRunner - server spec runner html
  */
-function serve(isDev, specRunner) {
+function serve(isDev, specRunner, port) {
     var debugMode = '--debug';
     var nodeOptions = getNodeOptions(isDev);
 
     nodeOptions.nodeArgs = [debugMode + '=5858'];
 
-    if (args.verbose) {
-        console.log(nodeOptions);
+    if(port) {
+        nodeOptions.env['PORT'] = port;
     }
+
+    //if (args.verbose) {
+        console.log(nodeOptions);
+    //}
 
     return $.nodemon(nodeOptions)
         .on('restart', ['vet'], function(ev) {
