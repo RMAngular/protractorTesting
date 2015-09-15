@@ -335,9 +335,7 @@ gulp.task('test-e2e', ['e2e-start-server', 'templatecache'], function(done) {
 });
 
 gulp.task('e2e-start-server', ['vet'], function() {
-    //1. run your script as a server
-    server = gls.new('./protractor/server/app.js');
-    server.start();
+    startE2eServer();
 });
 
 /**
@@ -628,6 +626,12 @@ function startTests(singleRun, done) {
     }
 }
 
+function startE2eServer() {
+    //1. run your script as a server
+    server = gls.new('./protractor/server/app.js');
+    server.start();
+}
+
 function stopE2eServer() {
     return server.stop();
 }
@@ -648,7 +652,10 @@ function runProtractor(done) {
         }))
         .on('error', function() {
             log('Protractor error.');
-            done();
+            stopE2eServer()
+                .then(function() {
+                    done();
+                });
         })
         .on('end', function() {
             log('Protractor end.');
