@@ -330,7 +330,7 @@ gulp.task('autotest', function(done) {
  *
  * @return {Stream}
  */
-gulp.task('test-e2e', ['e2e-start-server'], function(done) {
+gulp.task('test-e2e', ['e2e-start-server', 'templatecache'], function(done) {
     runProtractor(done);
 });
 

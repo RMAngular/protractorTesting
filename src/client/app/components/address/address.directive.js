@@ -1,5 +1,5 @@
 (function() {
-    angular.module('app.components.address', [])
+    angular.module('app.components.address')
         .directive('address', addressDirective);
 
     function addressDirective() {
