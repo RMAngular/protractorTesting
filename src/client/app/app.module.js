@@ -7,6 +7,7 @@
         'app.features',
         'app.components',
         'app.directives',
+        'app.services',
         'app.layout'
     ]);
 })();

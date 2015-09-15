@@ -1,73 +1,75 @@
-<div class="row">
-    <div class="col-sm-12">
-        <h6> Address</h6>
-        <div class="form-group">
-            <label class="">
-                <input type="radio" name="domesticForeign" id="domestic" ng-value="false" ng-model="vm.address.isForeign" ng-checked="!vm.address.isForeign"> US/Canada
-            </label>
-            <label class="">
-                <input type="radio" name="domesticForeign" id="foreign" ng-value="true" ng-model="vm.address.isForeign" ng-click="vm.resetCountry()" ng-checked="vm.address.isForeign"> Outside US/Canada
-            </label>
+<section ng-init="vm.init()">
+    <div class="row">
+        <div class="col-sm-12">
+            <h6> Address</h6>
+            <div class="form-group">
+                <label class="">
+                    <input type="radio" name="domesticForeign" id="domestic" ng-value="false" ng-model="vm.address.isForeign" ng-checked="!vm.address.isForeign"> US/Canada
+                </label>
+                <label class="">
+                    <input type="radio" name="domesticForeign" id="foreign" ng-value="true" ng-model="vm.address.isForeign" ng-click="vm.resetCountry()" ng-checked="vm.address.isForeign"> Outside US/Canada
+                </label>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="form-group validationContainer">
-            <label class="control-label" class="control-label" for="street1">Address 1 </label>
-            <input  id="street1" name="street1" type="text" class="form-control input-sm" placeholder="e.g. 123 ABC Street" ng-model="vm.address.street1" required validation-message ng-invalid-pattern="vm.postOfficeBoxRegEx" ng-invalid-pattern-message="cannot be a PO box." ng-invalid-pattern-if="{{vm.isPhysical}}">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group validationContainer">
+                <label class="control-label" class="control-label" for="street1">Address 1 </label>
+                <input  id="street1" name="street1" type="text" class="form-control input-sm" placeholder="e.g. 123 ABC Street" ng-model="vm.address.street1" required validation-message ng-invalid-pattern="vm.postOfficeBoxRegEx" ng-invalid-pattern-message="cannot be a PO box." ng-invalid-pattern-if="{{vm.isPhysical}}">
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="form-group validationContainer">
-            <label class="control-label" for="street2">Address 2</label>
-            <input id="street2" name="street2" type="text" class="form-control input-sm" placeholder="e.g. Unit #10" ng-model="vm.address.street2" validation-message ng-invalid-pattern="vm.postOfficeBoxRegEx" ng-invalid-pattern-message="cannot be a PO box.">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group validationContainer">
+                <label class="control-label" for="street2">Address 2</label>
+                <input id="street2" name="street2" type="text" class="form-control input-sm" placeholder="e.g. Unit #10" ng-model="vm.address.street2" validation-message ng-invalid-pattern="vm.postOfficeBoxRegEx" ng-invalid-pattern-message="cannot be a PO box.">
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12" ng-show="vm.address.isForeign || vm.address.street2">
-        <div class="form-group validationContainer foreignCountryAddress">
-            <label class="control-label" for="street3">Address 3</label>
-            <input id="street3" name="street3" type="text" class="form-control input-sm" placeholder="" ng-model="vm.address.street3" validation-message ng-invalid-pattern="vm.postOfficeBoxRegEx" ng-invalid-pattern-message="cannot be a PO box.">
+    <div class="row">
+        <div class="col-sm-12" ng-show="vm.address.isForeign || vm.address.street2">
+            <div class="form-group validationContainer foreignCountryAddress">
+                <label class="control-label" for="street3">Address 3</label>
+                <input id="street3" name="street3" type="text" class="form-control input-sm" placeholder="" ng-model="vm.address.street3" validation-message ng-invalid-pattern="vm.postOfficeBoxRegEx" ng-invalid-pattern-message="cannot be a PO box.">
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="form-group validationContainer">
-            <label class="control-label" for="city">City</label>
-            <input id="city" name="city" type="text" class="form-control input-sm" ng-model="vm.address.city" required validation-message>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group validationContainer">
+                <label class="control-label" for="city">City</label>
+                <input id="city" name="city" type="text" class="form-control input-sm" ng-model="vm.address.city" required validation-message>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12" ng-hide="vm.address.isForeign">
-        <div class="form-group validationContainer">
-            <label class="control-label" for="stateId">State/Province</label>
-            <select id="stateId" name="stateId" class="form-control input-sm" ng-options="state.id as state.value for state in vm.states" ng-model="vm.address.stateId" ng-change="vm.setCountry()" ng-required="!vm.address.isForeign" validation-message>
-                <option value=""></option>
-            </select>
+    <div class="row">
+        <div class="col-sm-12" ng-hide="vm.address.isForeign">
+            <div class="form-group validationContainer">
+                <label class="control-label" for="stateId">State/Province</label>
+                <select id="stateId" name="stateId" class="form-control input-sm" ng-options="state.id as state.value for state in vm.states" ng-model="vm.address.stateId" ng-change="vm.setCountry()" ng-required="!vm.address.isForeign" validation-message>
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="form-group validationContainer">
-            <label class="control-label" for="zipCode">{{vm.getZipCodeLabel(vm.address.stateId)}}</label>
-            <input id="zipCode" name="zipCode" type="text" class="form-control input-sm" ng-model="vm.address.zipCode" ng-required="!vm.address.isForeign" ng-pattern="vm.getZipCodePattern()" validation-message>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group validationContainer">
+                <label class="control-label" for="zipCode">{{vm.getZipCodeLabel(vm.address.stateId)}}</label>
+                <input id="zipCode" name="zipCode" type="text" class="form-control input-sm" ng-model="vm.address.zipCode" ng-required="!vm.address.isForeign" ng-pattern="vm.getZipCodePattern()" validation-message>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12" ng-show="vm.address.isForeign">
-        <div class="form-group validationContainer">
-            <label class="control-label" for="countryId">Country</label>
-            <select id="countryId" name="countryId" class="form-control input-sm" ng-options="country.id as country.value for country in vm.countries | filter : filterNonForeignCountries" ng-model="vm.address.countryId" ng-required="vm.address.isForeign" validation-message>
-                <option value=""></option>
-            </select>
+    <div class="row">
+        <div class="col-sm-12" ng-show="vm.address.isForeign">
+            <div class="form-group validationContainer">
+                <label class="control-label" for="countryId">Country</label>
+                <select id="countryId" name="countryId" class="form-control input-sm" ng-options="country.id as country.value for country in vm.countries | filter : filterNonForeignCountries" ng-model="vm.address.countryId" ng-required="vm.address.isForeign" validation-message>
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
     </div>
-</div>
+</section>
