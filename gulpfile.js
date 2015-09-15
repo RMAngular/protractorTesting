@@ -13,27 +13,9 @@ var colors = $.util.colors;
 var envenv = $.util.env;
 var port = process.env.PORT || config.defaultPort;
 
-var protractor = require("gulp-protractor").protractor;
-var webserver = require('gulp-webserver');
-
-
-gulp.task('protractor-run', function () {
-    return gulp
-        .src(config.protractor)
-        .pipe(protractor({
-            configFile: "./protractor.conf.js",
-            args: ['--baseUrl', 'http://127.0.0.1:8000']
-        }))
-        .on('error', function(e) { throw e });
-});
-
-//gulp.task('test:e2e', function(callback) {
-//    runSequence('protractor-server', 'protractor-run', callback);
-//});
-//
-//gulp.task('protractor-server', function() {
-//    serve(true, false, 9001);
-//});
+var gp = require('gulp-protractor');
+var gls = require('gulp-live-server');
+var server;
 
 /**
  * yargs variables can be passed in to alter the behavior, when present.
@@ -344,6 +326,21 @@ gulp.task('autotest', function(done) {
 });
 
 /**
+ * Run e2e specs
+ *
+ * @return {Stream}
+ */
+gulp.task('test-e2e', ['e2e-start-server'], function(done) {
+    runProtractor(done);
+});
+
+gulp.task('e2e-start-server', ['vet'], function() {
+    //1. run your script as a server
+    server = gls.new('./protractor/server/app.js');
+    server.start();
+});
+
+/**
  * serve the dev environment
  * --debug-brk or --debug
  * --nosync
@@ -458,12 +455,12 @@ function serve(isDev, specRunner, port) {
 
     nodeOptions.nodeArgs = [debugMode + '=5858'];
 
-    if(port) {
+    if (port) {
         nodeOptions.env['PORT'] = port;
     }
 
     //if (args.verbose) {
-        console.log(nodeOptions);
+    console.log(nodeOptions);
     //}
 
     return $.nodemon(nodeOptions)
@@ -594,6 +591,8 @@ function startTests(singleRun, done) {
     var fork = require('child_process').fork;
     var karma = require('karma').server;
     var serverSpecs = config.serverIntegrationSpecs;
+    var e2eSpecs = [config.scenarios];
+    var allSpecs = [].concat(serverSpecs, e2eSpecs);
 
     if (args.startServers) {
         log('Starting servers');
@@ -602,8 +601,8 @@ function startTests(singleRun, done) {
         savedEnv.PORT = 8888;
         child = fork(config.nodeServer);
     } else {
-        if (serverSpecs && serverSpecs.length) {
-            excludeFiles = serverSpecs;
+        if (allSpecs && allSpecs.length) {
+            excludeFiles = allSpecs;
         }
     }
 
@@ -627,6 +626,37 @@ function startTests(singleRun, done) {
             done();
         }
     }
+}
+
+function stopE2eServer() {
+    return server.stop();
+}
+
+/**
+ * Start the tests using Protractor.
+ * @param  {Function} done - Callback to fire when Protractor is done
+ * @return {Stream}
+ */
+function runProtractor(done) {
+    log('Running e2e specs...');
+
+    return gulp
+        .src([config.scenarios], {read:false})
+        .pipe($.plumber())
+        .pipe(gp.protractor({
+            configFile: './protractor.conf.js'
+        }))
+        .on('error', function() {
+            log('Protractor error.');
+            done();
+        })
+        .on('end', function() {
+            log('Protractor end.');
+            stopE2eServer()
+                .then(function() {
+                    done();
+                });
+        });
 }
 
 /**

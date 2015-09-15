@@ -120,6 +120,11 @@ module.exports = function() {
         serverIntegrationSpecs: [client + '/tests/server-integration/**/*.spec.js'],
 
         /**
+         * E2E
+         */
+        scenarios: clientApp + 'components/**/*e2e.js',
+
+        /**
          * Node settings
          */
         nodeServer: server + 'app.js',
