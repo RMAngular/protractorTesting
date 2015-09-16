@@ -5,22 +5,31 @@
         .module('app.features.address')
         .controller('AddressController', AddressController);
 
-    AddressController.$inject = ['logger'];
-
-    function AddressController(logger) {
+    /* @ngInject */
+    function AddressController(logger, countries, physicalAddress, states) {
         var vm = this;
 
+        vm.countries = countries;
+        vm.physicalAddress = physicalAddress;
+        vm.states = states;
         vm.save = save;
         vm.showErrors = false;
+        vm.title = 'Admin';
 
-        function save() {
+        vm.activate = activate;
+
+        function save(form) {
             vm.showErrors = true;
 
-            if (vm.addressForm.$valid) {
+            if (form.$valid) {
                 logger.info('valid');
             } else {
                 logger.error('invalid');
             }
+        }
+
+        function activate() {
+            logger.info('Activated Admin View');
         }
     }
 })();

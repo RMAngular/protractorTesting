@@ -3,7 +3,7 @@
     function BaseSpec(base) {
         'use strict';
 
-        var OwnerPage = require('../app/components/address/address.e2e.pageObject'),
+        var OwnerPage = require('../app/components/address/address.e2e.testPageObject.js'),
 
             ownerPage = new OwnerPage(base),
             pageData;

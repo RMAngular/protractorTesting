@@ -1,15 +1,15 @@
 /* jshint -W117, -W030 */
 (function() {
-    var OwnerPage = require('./address.e2e.pageObject'),
-        BaseFunctions = require('../../../test-helpers/base'),
-        BaseSpecFunctions = require('../../../test-helpers/baseSpec');
+    var MailingPage = require('./address.e2e.mailingAddressPageObject.js'),
+        PhysicalPage = require('./address.e2e.physicalAddressPageObject.js'),
+        BaseFunctions = require('../../../test-helpers/base');
 
-    describe('On: Owner Page', function() {
+    describe('On: Test Page', function() {
         'use strict';
 
         var base = new BaseFunctions(),
-            baseSpec = new BaseSpecFunctions(base),
-            ownerPage = new OwnerPage(base);
+            physicalPage = new PhysicalPage(base),
+            mailingPage = new MailingPage(base);
 
         it('should have a title', function () {
             browser.get('http://localhost:9001/address');
@@ -19,30 +19,30 @@
 
         });
 
-        describe('For: landing on to the owner page', function() {
+        describe('For: testing the physical address form', function() {
 
             it('Should: validate empty fields', function() {
-                ownerPage.clickSave().then(function() {
+                physicalPage.clickSave().then(function() {
 
                     expect(base.toasterIsPresent()).toBe(true);
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(ownerPage.physicalAddress1Error.text).toBe('Required');
-                        expect(ownerPage.physicalCityError.text).toBe('Required');
-                        expect(ownerPage.physicalStateError.text).toBe('Required');
-                        expect(ownerPage.physicalZipError.text).toBe('Required');
+                        expect(physicalPage.physicalAddress1Error.text).toBe('Required');
+                        expect(physicalPage.physicalCityError.text).toBe('Required');
+                        expect(physicalPage.physicalStateError.text).toBe('Required');
+                        expect(physicalPage.physicalZipError.text).toBe('Required');
                     });
                 });
             });
 
             it('Should: remove errors when valid', function() {
-                fillInfo('123 ABC Street', '#2', 'Denver', 'Alabama', '12345')
+                physicalFillInfo('123 ABC Street', '#2', 'Denver', 'Alabama', '12345')
                     .then(function() {
-                        expect(ownerPage.physicalAddress1Error.isPresent).toBe(false);
-                        expect(ownerPage.physicalCityError.isPresent).toBe(false);
-                        expect(ownerPage.physicalStateError.isPresent).toBe(false);
-                        expect(ownerPage.physicalZipError.isPresent).toBe(false);
+                        expect(physicalPage.physicalAddress1Error.isPresent).toBe(false);
+                        expect(physicalPage.physicalCityError.isPresent).toBe(false);
+                        expect(physicalPage.physicalStateError.isPresent).toBe(false);
+                        expect(physicalPage.physicalZipError.isPresent).toBe(false);
                     });
             });
 
@@ -54,76 +54,155 @@
 
                     list = poBox.length;
 
-                ownerPage.clearPhysicalAddress1();
-                ownerPage.physicalAddress1 = poBox[0];
-                ownerPage.clickSave().then(function () {
+                physicalPage.clearPhysicalAddress1();
+                physicalPage.physicalAddress1 = poBox[0];
+                physicalPage.clickSave().then(function () {
 
                     expect(base.toasterIsPresent()).toBe(true);
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(ownerPage.physicalAddress1POBOXError.isPresent).toBe(true);
+                        expect(physicalPage.physicalAddress1POBOXError.isPresent).toBe(true);
 
                         for (var i = 1; i < list; i++) {
-                            ownerPage.clearPhysicalAddress1();
-                            ownerPage.physicalAddress1 = poBox[i];
+                            physicalPage.clearPhysicalAddress1();
+                            physicalPage.physicalAddress1 = poBox[i];
 
-                            expect(ownerPage.physicalAddress1POBOXError.isPresent).toBe(true);
+                            expect(physicalPage.physicalAddress1POBOXError.isPresent).toBe(true);
                         }
 
-                        ownerPage.clearPhysicalAddress1();
-                        ownerPage.physicalAddress1 = '123 ABC Street';
+                        physicalPage.clearPhysicalAddress1();
+                        physicalPage.physicalAddress1 = '123 ABC Street';
                     });
                 });
             });
 
             it('Should: show correct info if not from the US', function() {
-                ownerPage.physicalAddress = 'Outside US/Canada';
+                physicalPage.physicalAddress = 'Outside US/Canada';
 
-                //expect(ownerPage.physicalCountryMessage).toBe('If you have a non-US address, ' +
+                //expect(physicalPage.physicalCountryMessage).toBe('If you have a non-US address, ' +
                 //    'we may require additional information from you.');
-                //expect(ownerPage.physicalCountryMessageIsPresent).toBe(true);
-                expect(ownerPage.physicalStateIsDisplayed).toBe(false);
-                expect(ownerPage.physicalCountryIsDisplayed).toBe(true);
+                //expect(physicalPage.physicalCountryMessageIsPresent).toBe(true);
+                expect(physicalPage.physicalStateIsDisplayed).toBe(false);
+                expect(physicalPage.physicalCountryIsDisplayed).toBe(true);
 
-                ownerPage.physicalAddress = 'US/Canada';
+                physicalPage.physicalAddress = 'US/Canada';
             });
 
             it('Should: validate fields if not from the US', function() {
-                ownerPage.physicalAddress = 'Outside US/Canada';
-                ownerPage.clickSave().then(function() {
+                physicalPage.physicalAddress = 'Outside US/Canada';
+                physicalPage.clickSave().then(function() {
 
                     expect(base.toasterIsPresent()).toBe(true);
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(ownerPage.physicalCountryError.isPresent).toBe(true);
-                        expect(ownerPage.physicalCountryError.text).toBe('Required');
+                        expect(physicalPage.physicalCountryError.isPresent).toBe(true);
+                        expect(physicalPage.physicalCountryError.text).toBe('Required');
 
-                        ownerPage.physicalCountry = 'Zaire';
+                        physicalPage.physicalCountry = 'Zaire';
                     });
                 });
             });
 
         });
 
-        function fillInfo(phyAddress1, phyAddress2, phyCity, phyState, phyZipCode, phyCountry) {
+        function physicalFillInfo(phyAddress1, phyAddress2, phyCity, phyState, phyZipCode, phyCountry) {
 
             // clear promises
             base.clearPromises();
 
-            ownerPage.physicalAddress1 = phyAddress1;
-            ownerPage.physicalAddress2 = phyAddress2;
-            ownerPage.physicalCity = phyCity;
+            physicalPage.physicalAddress1 = phyAddress1;
+            physicalPage.physicalAddress2 = phyAddress2;
+            physicalPage.physicalCity = phyCity;
 
             if (phyState) {
-                ownerPage.physicalState = phyState;
+                physicalPage.physicalState = phyState;
             }
 
-            ownerPage.physicalZip = phyZipCode;
+            physicalPage.physicalZip = phyZipCode;
 
             if (phyCountry) {
-                ownerPage.physicalCountry = phyCountry;
+                physicalPage.physicalCountry = phyCountry;
+            }
+
+            return base.resolvePromises();
+        }
+
+        describe('For: testing the mailing address form', function() {
+
+            it('Should: validate empty fields', function() {
+                mailingPage.clickSave().then(function() {
+
+                    expect(base.toasterIsPresent()).toBe(true);
+                    base.toasterClose().then(function() {
+                        //expect(base.toasterIsPresent()).toBe(false);
+
+                        expect(mailingPage.mailingAddress1Error.text).toBe('Required');
+                        expect(mailingPage.mailingCityError.text).toBe('Required');
+                        expect(mailingPage.mailingStateError.text).toBe('Required');
+                        expect(mailingPage.mailingZipError.text).toBe('Required');
+                    });
+                });
+            });
+
+            it('Should: remove errors when valid', function() {
+                mailingFillInfo('PO BOX 321', '#9', 'Phoenix', 'Texas', '98765')
+                    .then(function() {
+                        expect(mailingPage.mailingAddress1Error.isPresent).toBe(false);
+                        expect(mailingPage.mailingCityError.isPresent).toBe(false);
+                        expect(mailingPage.mailingStateError.isPresent).toBe(false);
+                        expect(mailingPage.mailingZipError.isPresent).toBe(false);
+                    });
+            });
+
+            it('Should: show correct info if not from the US', function() {
+                mailingPage.mailingAddress = 'Outside US/Canada';
+
+                //expect(mailingPage.mailingCountryMessage).toBe('If you have a non-US address, ' +
+                //    'we may require additional information from you.');
+                //expect(mailingPage.mailingCountryMessageIsPresent).toBe(true);
+                expect(mailingPage.mailingStateIsDisplayed).toBe(false);
+                expect(mailingPage.mailingCountryIsDisplayed).toBe(true);
+
+                mailingPage.mailingAddress = 'US/Canada';
+            });
+
+            it('Should: validate fields if not from the US', function() {
+                mailingPage.mailingAddress = 'Outside US/Canada';
+                mailingPage.clickSave().then(function() {
+
+                    expect(base.toasterIsPresent()).toBe(true);
+                    base.toasterClose().then(function() {
+                        //expect(base.toasterIsPresent()).toBe(false);
+
+                        expect(mailingPage.mailingCountryError.isPresent).toBe(true);
+                        expect(mailingPage.mailingCountryError.text).toBe('Required');
+
+                        mailingPage.mailingCountry = 'Zaire';
+                    });
+                });
+            });
+
+        });
+
+        function mailingFillInfo(mailAddress1, mailAddress2, mailCity, mailState, mailZipCode, mailCountry) {
+
+            // clear promises
+            base.clearPromises();
+
+            mailingPage.mailingAddress1 = mailAddress1;
+            mailingPage.mailingAddress2 = mailAddress2;
+            mailingPage.mailingCity = mailCity;
+
+            if (mailState) {
+                mailingPage.mailingState = mailState;
+            }
+
+            mailingPage.mailingZip = mailZipCode;
+
+            if (mailCountry) {
+                mailingPage.mailingCountry = mailCountry;
             }
 
             return base.resolvePromises();

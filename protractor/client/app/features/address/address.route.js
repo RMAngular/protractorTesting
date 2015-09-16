@@ -5,7 +5,6 @@
         .module('app.features.address')
         .run(appRun);
 
-    appRun.$inject = ['routerHelper'];
     /* @ngInject */
     function appRun(routerHelper) {
         routerHelper.configureStates(getStates());
@@ -20,9 +19,30 @@
                     templateUrl: 'app/features/address/address.html',
                     controller: 'AddressController',
                     controllerAs: 'vm',
-                    title: 'Address'
+                    title: 'Address',
+                    resolve: {
+                        countries: getCountriesLookup,
+                        physicalAddress: getPhysicalAddress,
+                        states: getStatesLookup
+
+                    }
                 }
             }
         ];
+    }
+
+    /* @ngInject */
+    function getCountriesLookup (LookupService) {
+        return LookupService.countries();
+    }
+
+    /* @ngInject */
+    function getPhysicalAddress (LookupService) {
+        return LookupService.physicalAddress();
+    }
+
+    /* @ngInject */
+    function getStatesLookup (LookupService) {
+        return LookupService.states();
     }
 })();

@@ -5,11 +5,13 @@
         .module('app.features.admin')
         .controller('AdminController', AdminController);
 
-    AdminController.$inject = ['logger'];
     /* @ngInject */
-    function AdminController(logger) {
+    function AdminController(logger, countries, physicalAddress, states) {
         var vm = this;
 
+        vm.countries = countries;
+        vm.physicalAddress = physicalAddress;
+        vm.states = states;
         vm.save = save;
         vm.showErrors = false;
         vm.title = 'Admin';
@@ -21,6 +23,8 @@
 
             if (vm.addressForm.$valid) {
                 logger.info('valid');
+            } else {
+                logger.info('invalid');
             }
         }
 

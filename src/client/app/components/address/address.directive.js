@@ -4,11 +4,15 @@
 
     function addressDirective() {
         return {
+            require: 'ngModel',
+            link: link,
             restrict: 'E',
             templateUrl: 'app/components/address/address.html',
             scope: {
                 isPhysical: '=',
-                showErrors: '='
+                showErrors: '=',
+                states: '=',
+                countries: '='
             },
             controller: Address,
             controllerAs: 'vm',
@@ -16,24 +20,25 @@
         };
     }
 
-    Address.$inject = ['$filter', 'LookupService'];
+    /*@ngInject*/
+    function link (scope, elem, attrs, ngModel) {
+        scope.address = ngModel.$modelValue;
+        scope.$watch('address',
+            function(value) {
+                ngModel.$setViewValue(value);
+            });
+    }
 
     /*@ngInject*/
-    function Address($filter, LookupService) {
+    function Address($filter) {
         var vm = this;
 
-        vm.init = init;
         vm.filterNonForeignCountries = filterNonForeignCountries;
         vm.getZipCodePattern = getZipCodePattern;
         vm.getZipCodeLabel = getZipCodeLabel;
         vm.postOfficeBoxRegEx = /(\b[P|p]*(OST|ost)*\.*\s*[O|o|0]*(ffice|FFICE)*\.*\s*[B|b][O|o|0][X|x]\b)/;
         vm.resetPhysicalCountry = resetCountry;
         vm.setPhysicalCountry = setCountry;
-
-        function init() {
-            vm.states = LookupService.states();
-            vm.countries = LookupService.countries();
-        }
 
         function filterNonForeignCountries(value) {
             return !(value.id === 'US' || value.id === 'UM' || value.id === 'CA');

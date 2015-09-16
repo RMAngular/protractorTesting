@@ -1,32 +1,31 @@
 /* jshint -W117, -W030 */
 (function() {
-    function OwnerPage(base) {
+    function PhysicalPage(base) {
         'use strict';
 
-        var ErrorMessage = require('../../../test-helpers/errorMessage'),
+        var ErrorMessage = require('../../../test-helpers/errorMessage');
 
         //******content********
-            physicalAddress = element.all(by.model('vm.address.isForeign')),
-            physicalCountry = element(by.model('vm.address.countryId')),
-            physicalCountryMessage = element(by.cssContainingText('.message-info',
+        var directive = element(by.model('vm.physicalAddress')),
+            physicalAddress = directive.all(by.model('address.isForeign')),
+            physicalCountry = directive.element(by.model('address.countryId')),
+            physicalCountryMessage = directive.element(by.cssContainingText('.message-info',
                 'If you have a non-US address, we may require additional information from you.')),
-            physicalCountryOptions = physicalCountry.all(by.tagName('option')),
-            physicalAddress1 = element(by.model('vm.address.street1')),
-            physicalAddress2 = element(by.model('vm.address.street2')),
-            physicalCity = element(by.model('vm.address.city')),
-            physicalState = element(by.model('vm.address.stateId')),
-            physicalStateOptions = physicalState.all(by.tagName('option')),
-            physicalZip = element(by.model('vm.address.zipCode')),
+            physicalAddress1 = directive.element(by.model('address.street1')),
+            physicalAddress2 = directive.element(by.model('address.street2')),
+            physicalCity = directive.element(by.model('address.city')),
+            physicalState = directive.element(by.model('address.stateId')),
+            physicalZip = directive.element(by.model('address.zipCode')),
 
         //********errors********
-            physicalCountryErrors = new ErrorMessage(element(by.css('#countryIdRequired'))),
-            physicalAddress1Errors = new ErrorMessage(element(by.css('#street1Required'))),
-            physicalAddress1POBOXError = new ErrorMessage(element(by.css('#street1InvalidPattern'))),
-            physicalCityErrors = new ErrorMessage(element(by.css('#cityRequired'))),
-            physicalStateErrors = new ErrorMessage(element(by.css('#stateIdRequired'))),
-            physicalZipErrors = new ErrorMessage(element(by.css('#zipCodeRequired'))),
+            physicalCountryErrors = new ErrorMessage(directive.element(by.css('#countryIdRequired'))),
+            physicalAddress1Errors = new ErrorMessage(directive.element(by.css('#street1Required'))),
+            physicalAddress1POBOXError = new ErrorMessage(directive.element(by.css('#street1InvalidPattern'))),
+            physicalCityErrors = new ErrorMessage(directive.element(by.css('#cityRequired'))),
+            physicalStateErrors = new ErrorMessage(directive.element(by.css('#stateIdRequired'))),
+            physicalZipErrors = new ErrorMessage(directive.element(by.css('#zipCodeRequired'))),
 
-            saveButton = element(by.css('[ng-click="vm.save()"]'));
+            physicalSaveButton = element(by.css('[ng-click="vm.save(vm.physicalAddressForm)"]'));
 
         //*********browser properties**********
         Object.defineProperty(this, 'title', {
@@ -43,7 +42,7 @@
 
         //**********buttons************
         this.clickSave = function () {
-            return saveButton.click();
+            return physicalSaveButton.click();
         };
 
         this.clearPhysicalAddress1 = function() {
@@ -136,7 +135,8 @@
         Object.defineProperty(this, 'physicalZipError', {
             get: function() { return physicalZipErrors; }
         });
+
     }
 
-    module.exports = OwnerPage;
+    module.exports = PhysicalPage;
 })();

@@ -5,7 +5,6 @@
         .module('app.features.admin')
         .run(appRun);
 
-    appRun.$inject = ['routerHelper'];
     /* @ngInject */
     function appRun(routerHelper) {
         routerHelper.configureStates(getStates());
@@ -24,9 +23,30 @@
                     settings: {
                         nav: 2,
                         content: '<i class="fa fa-lock"></i> Admin'
+                    },
+                    resolve: {
+                        countries: getCountriesLookup,
+                        physicalAddress: getPhysicalAddress,
+                        states: getStatesLookup
+
                     }
                 }
             }
         ];
+    }
+
+    /* @ngInject */
+    function getCountriesLookup (LookupService) {
+        return LookupService.countries();
+    }
+
+    /* @ngInject */
+    function getPhysicalAddress (LookupService) {
+        return LookupService.physicalAddress();
+    }
+
+    /* @ngInject */
+    function getStatesLookup (LookupService) {
+        return LookupService.states();
     }
 })();
