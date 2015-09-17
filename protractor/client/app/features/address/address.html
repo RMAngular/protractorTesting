@@ -13,11 +13,3 @@
 
     <button class="save-btn button" ng-click="vm.save(vm.mailingAddressForm)">Save</button>
 </form>
-
-<form name="vm.foreignAddressForm" class="form-horizontal" role="form" novalidate>
-
-    <address states="vm.states" countries="vm.countries" ng-model="vm.foreignAddress"
-             is-physical="false" show-errors="vm.showErrors"></address>
-
-    <button class="save-btn button" ng-click="vm.save(vm.foreignAddressForm)">Save</button>
-</form>

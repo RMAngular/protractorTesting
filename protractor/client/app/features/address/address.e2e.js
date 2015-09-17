@@ -1,15 +1,14 @@
 /* jshint -W117, -W030 */
 (function() {
-    var MailingPage = require('./address.e2e.mailingAddressPageObject.js'),
-        PhysicalPage = require('./address.e2e.PhysicalAddressPageObject.js'),
+    var AddressPage = require('./address.e2e.addressControl.js'),
         BaseFunctions = require('../../../../../src/client/test-helpers/base');
 
     describe('On: Test Page', function() {
         'use strict';
 
         var base = new BaseFunctions(),
-            physicalPage = new PhysicalPage(base),
-            mailingPage = new MailingPage(base);
+            physicalPage = new AddressPage(base, 'vm.physicalAddress'),
+            mailingPage = new AddressPage(base, 'vm.mailingAddress');
 
         it('should have a title', function () {
             browser.get('http://localhost:9001/address');
@@ -28,21 +27,21 @@
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(physicalPage.physicalAddress1Error.text).toBe('Required');
-                        expect(physicalPage.physicalCityError.text).toBe('Required');
-                        expect(physicalPage.physicalStateError.text).toBe('Required');
-                        expect(physicalPage.physicalZipError.text).toBe('Required');
+                        expect(physicalPage.address1Error.text).toBe('Required');
+                        expect(physicalPage.cityError.text).toBe('Required');
+                        expect(physicalPage.stateError.text).toBe('Required');
+                        expect(physicalPage.zipError.text).toBe('Required');
                     });
                 });
             });
 
             it('Should: remove errors when valid', function() {
-                physicalFillInfo('123 ABC Street', '#2', 'Denver', 'Alabama', '12345')
+                fillInfo(physicalPage, '123 ABC Street', '#2', 'Denver', 'Alabama', '12345')
                     .then(function() {
-                        expect(physicalPage.physicalAddress1Error.isPresent).toBe(false);
-                        expect(physicalPage.physicalCityError.isPresent).toBe(false);
-                        expect(physicalPage.physicalStateError.isPresent).toBe(false);
-                        expect(physicalPage.physicalZipError.isPresent).toBe(false);
+                        expect(physicalPage.address1Error.isPresent).toBe(false);
+                        expect(physicalPage.cityError.isPresent).toBe(false);
+                        expect(physicalPage.stateError.isPresent).toBe(false);
+                        expect(physicalPage.zipError.isPresent).toBe(false);
                     });
             });
 
@@ -54,76 +53,76 @@
 
                     list = poBox.length;
 
-                physicalPage.clearPhysicalAddress1();
-                physicalPage.physicalAddress1 = poBox[0];
+                physicalPage.clearAddress1();
+                physicalPage.address1 = poBox[0];
                 physicalPage.clickSave().then(function () {
 
                     expect(base.toasterIsPresent()).toBe(true);
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(physicalPage.physicalAddress1POBOXError.isPresent).toBe(true);
+                        expect(physicalPage.address1POBOXError.isPresent).toBe(true);
 
                         for (var i = 1; i < list; i++) {
-                            physicalPage.clearPhysicalAddress1();
-                            physicalPage.physicalAddress1 = poBox[i];
+                            physicalPage.clearAddress1();
+                            physicalPage.address1 = poBox[i];
 
-                            expect(physicalPage.physicalAddress1POBOXError.isPresent).toBe(true);
+                            expect(physicalPage.address1POBOXError.isPresent).toBe(true);
                         }
 
-                        physicalPage.clearPhysicalAddress1();
-                        physicalPage.physicalAddress1 = '123 ABC Street';
+                        physicalPage.clearAddress1();
+                        physicalPage.address1 = '123 ABC Street';
                     });
                 });
             });
 
             it('Should: show correct info if not from the US', function() {
-                physicalPage.physicalAddress = 'Outside US/Canada';
+                physicalPage.isForeign = 'Outside US/Canada';
 
                 //expect(physicalPage.physicalCountryMessage).toBe('If you have a non-US address, ' +
                 //    'we may require additional information from you.');
                 //expect(physicalPage.physicalCountryMessageIsPresent).toBe(true);
-                expect(physicalPage.physicalStateIsDisplayed).toBe(false);
-                expect(physicalPage.physicalCountryIsDisplayed).toBe(true);
+                expect(physicalPage.stateIsDisplayed).toBe(false);
+                expect(physicalPage.countryIsDisplayed).toBe(true);
 
-                physicalPage.physicalAddress = 'US/Canada';
+                physicalPage.isForeign = 'US/Canada';
             });
 
             it('Should: validate fields if not from the US', function() {
-                physicalPage.physicalAddress = 'Outside US/Canada';
+                physicalPage.isForeign = 'Outside US/Canada';
                 physicalPage.clickSave().then(function() {
 
                     expect(base.toasterIsPresent()).toBe(true);
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(physicalPage.physicalCountryError.isPresent).toBe(true);
-                        expect(physicalPage.physicalCountryError.text).toBe('Required');
+                        expect(physicalPage.countryError.isPresent).toBe(true);
+                        expect(physicalPage.countryError.text).toBe('Required');
 
-                        physicalPage.physicalCountry = 'Zaire';
+                        physicalPage.country = 'Zaire';
                     });
                 });
             });
 
         });
 
-        function physicalFillInfo(phyAddress1, phyAddress2, phyCity, phyState, phyZipCode, phyCountry) {
+        function fillInfo(page, address1, address2, city, state, zipCode, country) {
 
             // clear promises
             base.clearPromises();
 
-            physicalPage.physicalAddress1 = phyAddress1;
-            physicalPage.physicalAddress2 = phyAddress2;
-            physicalPage.physicalCity = phyCity;
+            page.address1 = address1;
+            page.address2 = address2;
+            page.city = city;
 
-            if (phyState) {
-                physicalPage.physicalState = phyState;
+            if (state) {
+                page.state = state;
             }
 
-            physicalPage.physicalZip = phyZipCode;
+            page.zip = zipCode;
 
-            if (phyCountry) {
-                physicalPage.physicalCountry = phyCountry;
+            if (country) {
+                page.country = country;
             }
 
             return base.resolvePromises();
@@ -138,91 +137,51 @@
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(mailingPage.mailingAddress1Error.text).toBe('Required');
-                        expect(mailingPage.mailingCityError.text).toBe('Required');
-                        expect(mailingPage.mailingStateError.text).toBe('Required');
-                        expect(mailingPage.mailingZipError.text).toBe('Required');
+                        expect(mailingPage.address1Error.text).toBe('Required');
+                        expect(mailingPage.cityError.text).toBe('Required');
+                        expect(mailingPage.stateError.text).toBe('Required');
+                        expect(mailingPage.zipError.text).toBe('Required');
                     });
                 });
             });
 
             it('Should: remove errors when valid', function() {
-                mailingFillInfo('PO BOX 321', '#9', 'Phoenix', 'Texas', '98765')
+                fillInfo(mailingPage, 'PO BOX 321', '#9', 'Phoenix', 'Texas', '98765')
                     .then(function() {
-                        expect(mailingPage.mailingAddress1Error.isPresent).toBe(false);
-                        expect(mailingPage.mailingCityError.isPresent).toBe(false);
-                        expect(mailingPage.mailingStateError.isPresent).toBe(false);
-                        expect(mailingPage.mailingZipError.isPresent).toBe(false);
+                        expect(mailingPage.address1Error.isPresent).toBe(false);
+                        expect(mailingPage.cityError.isPresent).toBe(false);
+                        expect(mailingPage.stateError.isPresent).toBe(false);
+                        expect(mailingPage.zipError.isPresent).toBe(false);
                     });
             });
 
             it('Should: show correct info if not from the US', function() {
-                mailingPage.mailingAddress = 'Outside US/Canada';
-
+                mailingPage.isForeign = 'Outside US/Canada';
                 //expect(mailingPage.mailingCountryMessage).toBe('If you have a non-US address, ' +
                 //    'we may require additional information from you.');
                 //expect(mailingPage.mailingCountryMessageIsPresent).toBe(true);
-                expect(mailingPage.mailingStateIsDisplayed).toBe(false);
-                expect(mailingPage.mailingCountryIsDisplayed).toBe(true);
+                expect(mailingPage.stateIsDisplayed).toBe(false);
+                expect(mailingPage.countryIsDisplayed).toBe(true);
 
-                mailingPage.mailingAddress = 'US/Canada';
+                mailingPage.isForeign = 'US/Canada';
             });
 
             it('Should: validate fields if not from the US', function() {
-                mailingPage.mailingAddress = 'Outside US/Canada';
+                mailingPage.isForeign = 'Outside US/Canada';
                 mailingPage.clickSave().then(function() {
 
                     expect(base.toasterIsPresent()).toBe(true);
                     base.toasterClose().then(function() {
                         //expect(base.toasterIsPresent()).toBe(false);
 
-                        expect(mailingPage.mailingCountryError.isPresent).toBe(true);
-                        expect(mailingPage.mailingCountryError.text).toBe('Required');
+                        expect(mailingPage.countryError.isPresent).toBe(true);
+                        expect(mailingPage.countryError.text).toBe('Required');
 
-                        mailingPage.mailingCountry = 'Zaire';
+                        mailingPage.country = 'Zaire';
                     });
                 });
             });
 
         });
-
-        function mailingFillInfo(mailAddress1, mailAddress2, mailCity, mailState, mailZipCode, mailCountry) {
-
-            // clear promises
-            base.clearPromises();
-
-            mailingPage.mailingAddress1 = mailAddress1;
-            mailingPage.mailingAddress2 = mailAddress2;
-            mailingPage.mailingCity = mailCity;
-
-            if (mailState) {
-                mailingPage.mailingState = mailState;
-            }
-
-            mailingPage.mailingZip = mailZipCode;
-
-            if (mailCountry) {
-                mailingPage.mailingCountry = mailCountry;
-            }
-
-            return base.resolvePromises();
-        }
-
-        describe('PDP-101 - Foreign Addresses should hide states', function() {
-            it('should hide states when user selects foreign country', function() {
-                // user selects is foreign radio button
-                mailingPage.isForeign = true;
-
-                // expect that states is hidden and countries is visible
-                expect(mailingPage.mailingStateIsDisplayed).to.be.false();
-                expect(mailingPage.mailingCountryIsDisplayed).to.be.true();
-
-                mailingPage.mailingCountry = 'Vietnam';
-
-                mailingPage.clickSave();
-
-                expect()
-            })
-        })
     });
 })();
