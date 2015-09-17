@@ -44,7 +44,7 @@ module.exports = function() {
             '**/*.js'
         ],
         less: client + 'styles/styles.less',
-        protractor: client + 'app/components/**/*e2e.js',
+        protractor: client + 'protractor/client/app/features/**/*e2e.js',
         report: report,
         root: root,
         server: server,
@@ -122,7 +122,7 @@ module.exports = function() {
         /**
          * E2E
          */
-        scenarios: './protractor/client/app/components/**/*e2e.js',
+        scenarios: './protractor/client/app/features/**/*e2e.js',
 
         /**
          * Node settings
