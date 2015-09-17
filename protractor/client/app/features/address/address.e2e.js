@@ -1,8 +1,8 @@
 /* jshint -W117, -W030 */
 (function() {
     var MailingPage = require('./address.e2e.mailingAddressPageObject.js'),
-        PhysicalPage = require('./address.e2e.physicalAddressPageObject.js'),
-        BaseFunctions = require('../../../test-helpers/base');
+        PhysicalPage = require('./address.e2e.PhysicalAddressPageObject.js'),
+        BaseFunctions = require('../../../../../src/client/test-helpers/base');
 
     describe('On: Test Page', function() {
         'use strict';
@@ -207,5 +207,22 @@
 
             return base.resolvePromises();
         }
+
+        describe('PDP-101 - Foreign Addresses should hide states', function() {
+            it('should hide states when user selects foreign country', function() {
+                // user selects is foreign radio button
+                mailingPage.isForeign = true;
+
+                // expect that states is hidden and countries is visible
+                expect(mailingPage.mailingStateIsDisplayed).to.be.false();
+                expect(mailingPage.mailingCountryIsDisplayed).to.be.true();
+
+                mailingPage.mailingCountry = 'Vietnam';
+
+                mailingPage.clickSave();
+
+                expect()
+            })
+        })
     });
 })();

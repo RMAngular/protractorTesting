@@ -51,29 +51,30 @@
 <!-- build:js js/app.js -->
 <!-- inject:js -->
 <script src="/protractor/client/app/app.module.js"></script>
-<script src="/protractor/client/app/core/core.module.js"></script>
+<script src="/src/client/app/core/core.module.js"></script>
 <script src="/.tmp/templates.js"></script>
 <script src="/src/client/app/directives/directives.module.js"></script>
 <script src="/src/client/app/directives/invalidPattern.js"></script>
 <script src="/src/client/app/directives/validationMessage.js"></script>
-<script src="/protractor/client/app/blocks/exception/exception.module.js"></script>
-<script src="/protractor/client/app/blocks/logger/logger.module.js"></script>
-<script src="/protractor/client/app/blocks/router/router.module.js"></script>
+<script src="/src/client/app/blocks/exception/exception.module.js"></script>
+<script src="/src/client/app/blocks/logger/logger.module.js"></script>
+<script src="/src/client/app/blocks/router/router.module.js"></script>
 <script src="/src/client/app/components/components.module.js"></script>
 <script src="/src/client/app/components/address/address.module.js"></script>
-<script src="/src/client/app/services/services.module.js"></script>
+<script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+<script src="/src/client/app/blocks/exception/exception.js"></script>
+<script src="/src/client/app/blocks/logger/logger.js"></script>
+<script src="/src/client/app/blocks/router/router-helper.provider.js"></script>
+<script src="/src/client/app/components/address/address.directive.js"></script>
+<script src="/src/client/app/core/config.js"></script>
+<script src="/src/client/app/core/constants.js"></script>
+<script src="/src/client/app/core/core.route.js"></script>
+<script src="/src/client/app/core/dataservice.js"></script>
+
+<script src="/protractor/client/app/services/services.module.js"></script>
+<script src="/protractor/client/app/services/lookups.service.js"></script>
 <script src="/protractor/client/app/features/address/address.module.js"></script>
 <script src="/protractor/client/app/features/features.module.js"></script>
-<script src="/protractor/client/app/blocks/exception/exception-handler.provider.js"></script>
-<script src="/protractor/client/app/blocks/exception/exception.js"></script>
-<script src="/protractor/client/app/blocks/logger/logger.js"></script>
-<script src="/protractor/client/app/blocks/router/router-helper.provider.js"></script>
-<script src="/src/client/app/components/address/address.directive.js"></script>
-<script src="/src/client/app/services/lookups.service.js"></script>
-<script src="/protractor/client/app/core/config.js"></script>
-<script src="/protractor/client/app/core/constants.js"></script>
-<script src="/protractor/client/app/core/core.route.js"></script>
-<script src="/protractor/client/app/core/dataservice.js"></script>
 <script src="/protractor/client/app/features/address/address.controller.js"></script>
 <script src="/protractor/client/app/features/address/address.route.js"></script>
 

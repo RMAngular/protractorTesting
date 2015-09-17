@@ -122,7 +122,7 @@ module.exports = function() {
         /**
          * E2E
          */
-        scenarios: clientApp + 'components/**/*e2e.js',
+        scenarios: './protractor/client/app/components/**/*e2e.js',
 
         /**
          * Node settings

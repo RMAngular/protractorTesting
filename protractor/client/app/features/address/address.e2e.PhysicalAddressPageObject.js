@@ -3,7 +3,7 @@
     function PhysicalPage(base) {
         'use strict';
 
-        var ErrorMessage = require('../../../test-helpers/errorMessage');
+        var ErrorMessage = require('../../../../../src/client/test-helpers/errorMessage');
 
         //******content********
         var directive = element(by.model('vm.physicalAddress')),
