@@ -5,6 +5,8 @@
 
         var ErrorMessage = require('../../../../../src/client/test-helpers/errorMessage');
 
+        var dirId = ngmodel.toString().split('.').pop();
+
         //******content********
         var directive = element(by.model(ngmodel)),
             isForeign = directive.all(by.model('address.isForeign')),
@@ -25,7 +27,7 @@
             stateErrors = new ErrorMessage(directive.element(by.css('#stateIdRequired'))),
             zipErrors = new ErrorMessage(directive.element(by.css('#zipCodeRequired'))),
 
-            saveButton = element(by.css('[ng-click="vm.save(' + ngmodel + 'Form)"]'));
+            saveButton = element(by.css('#' + dirId + ' .save-btn'));
 
         //*********browser properties**********
         Object.defineProperty(this, 'title', {

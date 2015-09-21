@@ -1,15 +1,9 @@
-<form name="vm.physicalAddressForm" class="form-horizontal" role="form" novalidate>
-
+<div id="physicalAddress">
     <address states="vm.states" countries="vm.countries" ng-model="vm.physicalAddress"
              is-physical="true" show-errors="vm.showErrors"></address>
+</div>
 
-    <button class="save-btn button" ng-click="vm.save(vm.physicalAddressForm)">Save</button>
-</form>
-
-<form name="vm.mailingAddressForm" class="form-horizontal" role="form" novalidate>
-
+<div id="mailingAddress">
     <address states="vm.states" countries="vm.countries" ng-model="vm.mailingAddress"
              is-physical="false" show-errors="vm.showErrors"></address>
-
-    <button class="save-btn button" ng-click="vm.save(vm.mailingAddressForm)">Save</button>
-</form>
+</div>

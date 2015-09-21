@@ -1,4 +1,5 @@
-<section>
+<form name="vm.addressForm" class="form-horizontal" role="form" novalidate>
+    <section>
     <div class="row">
         <div class="col-sm-12">
             <h6> Address</h6>
@@ -73,3 +74,6 @@
         </div>
     </div>
 </section>
+
+    <button class="save-btn button" ng-click="vm.save(vm.addressForm)">Save</button>
+</form>

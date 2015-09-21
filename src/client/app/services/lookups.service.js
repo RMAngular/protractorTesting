@@ -6,15 +6,8 @@
     function lookupService() {
         return {
             states: states,
-            countries: countries,
-            physicalAddress: physicalAddress
+            countries: countries
         };
-
-        function physicalAddress () {
-            return {
-                isForeign: false
-            };
-        }
 
         function states() {
             return [{

@@ -22,7 +22,6 @@
                     title: 'Address',
                     resolve: {
                         countries: getCountriesLookup,
-                        physicalAddress: getPhysicalAddress,
                         states: getStatesLookup
 
                     }
@@ -34,11 +33,6 @@
     /* @ngInject */
     function getCountriesLookup (LookupService) {
         return LookupService.countries();
-    }
-
-    /* @ngInject */
-    function getPhysicalAddress (LookupService) {
-        return LookupService.physicalAddress();
     }
 
     /* @ngInject */

@@ -3,8 +3,8 @@ describe('AdminController', function() {
     var controller;
 
     beforeEach(function() {
-        bard.appModule('app.features.admin');
-        bard.inject('$controller', '$log', '$rootScope');
+        bard.appModule('app.features.admin', 'app.resolve');
+        bard.inject('$controller', '$log', '$rootScope', 'countries', 'states');
     });
 
     beforeEach(function () {

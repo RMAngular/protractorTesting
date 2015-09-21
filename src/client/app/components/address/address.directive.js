@@ -12,7 +12,8 @@
                 isPhysical: '=',
                 showErrors: '=',
                 states: '=',
-                countries: '='
+                countries: '=',
+                model: '='
             },
             controller: Address,
             controllerAs: 'vm',
@@ -30,7 +31,7 @@
     }
 
     /*@ngInject*/
-    function Address($filter) {
+    function Address($filter, logger) {
         var vm = this;
 
         vm.filterNonForeignCountries = filterNonForeignCountries;
@@ -38,6 +39,7 @@
         vm.getZipCodeLabel = getZipCodeLabel;
         vm.postOfficeBoxRegEx = /(\b[P|p]*(OST|ost)*\.*\s*[O|o|0]*(ffice|FFICE)*\.*\s*[B|b][O|o|0][X|x]\b)/;
         vm.resetPhysicalCountry = resetCountry;
+        vm.save = save;
         vm.setPhysicalCountry = setCountry;
 
         function filterNonForeignCountries(value) {
@@ -87,6 +89,16 @@
 
         function resetCountry(address) {
             address.countryId = null;
+        }
+
+        function save(form) {
+            vm.showErrors = true;
+
+            if (form.$valid) {
+                logger.info('valid');
+            } else {
+                logger.error('invalid');
+            }
         }
 
         function setCountry(address) {
