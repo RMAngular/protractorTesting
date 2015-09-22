@@ -91,18 +91,19 @@
             address.countryId = null;
         }
 
-        function save(form) {
+        function save(address) {
             vm.showErrors = true;
 
-            if (form.$valid) {
+            if (vm.addressForm.$valid) {
                 logger.info('valid form');
-                AddressService.save(form)
+                AddressService.save(address)
                     .then(function(response) {
-                        logger.info(response.data);
+                        logger.info('Status: ' + response.status);
+                        logger.success('Success');
                     })
                     .catch(function(error) {
                         console.log(error);
-                        logger.error('500 error');
+                        logger.error('error');
                     });
             } else {
                 logger.error('invalid form');

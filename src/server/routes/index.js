@@ -3,9 +3,10 @@
 
     function Routes() {
         var router = require('express').Router(),
-            services = require('../services');
+            services = require('../services')();
 
         require('./addresses')(router, services);
+        require('./people')(router, services);
 
         return router;
     }

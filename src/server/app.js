@@ -16,7 +16,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-app.use('/api', require('./routes'));
+var services = require('./services');
+var routes = require('./routes')(services);
+app.use('/api', routes);
 
 console.log('About to crank up node');
 console.log('PORT=' + port);

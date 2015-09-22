@@ -9,15 +9,15 @@
 
         //******content********
         var directive = element(by.model(ngmodel)),
-            isForeign = directive.all(by.model('address.isForeign')),
-            country = directive.element(by.model('address.countryId')),
+            isForeign = directive.all(by.model('vm.address.isForeign')),
+            country = directive.element(by.model('vm.address.countryId')),
             countryMessage = directive.element(by.cssContainingText('.message-info',
                 'If you have a non-US address, we may require additional information from you.')),
-            address1 = directive.element(by.model('address.street1')),
-            address2 = directive.element(by.model('address.street2')),
-            city = directive.element(by.model('address.city')),
-            state = directive.element(by.model('address.stateId')),
-            zip = directive.element(by.model('address.zipCode')),
+            address1 = directive.element(by.model('vm.address.street1')),
+            address2 = directive.element(by.model('vm.address.street2')),
+            city = directive.element(by.model('vm.address.city')),
+            state = directive.element(by.model('vm.address.stateId')),
+            zip = directive.element(by.model('vm.address.zipCode')),
 
         //********errors********
             countryErrors = new ErrorMessage(directive.element(by.css('#countryIdRequired'))),

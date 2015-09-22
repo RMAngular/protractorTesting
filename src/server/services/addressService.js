@@ -1,5 +1,7 @@
 (function () {
     'use strict';
+    var q = require('q');
+
     var self;
 
     function AddressService() {
@@ -11,8 +13,8 @@
     module.exports = AddressService;
 
     function insert(body) {
-        if (body.address1) {
-            return 'Address Saved';
+        if (body.street1) {
+            return q.when(true);
         }
     }
 })();
