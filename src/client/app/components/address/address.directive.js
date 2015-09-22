@@ -31,7 +31,7 @@
     }
 
     /*@ngInject*/
-    function Address($filter, logger) {
+    function Address($filter, logger, AddressService) {
         var vm = this;
 
         vm.filterNonForeignCountries = filterNonForeignCountries;
@@ -95,9 +95,17 @@
             vm.showErrors = true;
 
             if (form.$valid) {
-                logger.info('valid');
+                logger.info('valid form');
+                AddressService.save(form)
+                    .then(function(response) {
+                        logger.info(response.data);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        logger.error('500 error');
+                    });
             } else {
-                logger.error('invalid');
+                logger.error('invalid form');
             }
         }
 
